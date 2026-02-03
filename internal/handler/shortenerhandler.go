@@ -1,0 +1,72 @@
+package handler
+
+import (
+	"crypto/rand"
+	"encoding/base64"
+	"fmt"
+	"io"
+	"net/http"
+	"strings"
+
+	"github.com/Nakohartum/practicum-shortener/internal/service"
+)
+
+type ShortenerHandler struct {
+	dataHandlerService service.DataHandler
+}
+
+func NewShortenerHandler(dataHandlerService service.DataHandler) *ShortenerHandler {
+	return &ShortenerHandler{
+		dataHandlerService: dataHandlerService,
+	}
+}
+
+func (sh *ShortenerHandler) HandleShortenerSet(rw http.ResponseWriter, req *http.Request ){
+	if req.Method != http.MethodPost {
+		http.Error(rw, "not correct method", http.StatusBadRequest)
+		return
+	}
+
+	if url, err := io.ReadAll(req.Body); err != nil {
+		http.Error(rw, "error happened reading body", http.StatusBadRequest)
+		return
+	} else {
+		shortentRes, err := shortenUrl(6)
+		if err != nil {
+			http.Error(rw, err.Error(), http.StatusBadRequest)
+			return
+		}
+		rw.Header().Set("Content-Type", "text/plain")
+		res := req.Host + "/" + shortentRes
+		sh.dataHandlerService.SetData(shortentRes, string(url))
+		rw.WriteHeader(http.StatusCreated)
+		rw.Write([]byte(res))
+	}
+}
+
+func shortenUrl(nBytes int) (string, error) {
+	b := make([]byte, nBytes)
+
+	if _, err := rand.Read(b); err != nil {
+		return "", err
+	}
+	return base64.RawURLEncoding.EncodeToString(b), nil
+}
+
+func (sh *ShortenerHandler) HandleShortenerGet(rw http.ResponseWriter, req *http.Request) {
+	if req.Method != http.MethodGet{
+		http.Error(rw, "not correct method", http.StatusBadRequest)
+		return
+	}
+
+	urlParts := strings.Split(strings.Trim(req.URL.Path, "/"), "/")
+
+	if len(urlParts) > 1{
+		http.Error(rw, "not correct path", http.StatusBadRequest)
+	}
+
+	res := sh.dataHandlerService.GetData(urlParts[0])
+	rw.Header().Set("Location", string(res))
+	rw.WriteHeader(http.StatusTemporaryRedirect)
+}
+
