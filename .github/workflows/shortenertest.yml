@@ -18,7 +18,6 @@ jobs:
 
   shortenertest:
     runs-on: ubuntu-latest
-    container: golang:1.24
     needs: branchtest
 
     env:
@@ -39,6 +38,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: Setup Go 1.25.5
+        uses: actions/setup-go@v5
+        with:
+             go-version: '1.25.5'
 
       - name: Download autotests binaries
         uses: robinraju/release-downloader@v1.8
