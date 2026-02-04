@@ -12,7 +12,7 @@ import (
 func main() {
 	mux := http.NewServeMux()
 	repo := config.NewInMemoryRepo()
-	dataHandlerService := service.NewShortenUrlService(repo)
+	dataHandlerService := service.NewShortenURLService(repo)
 	handler := handler.NewShortenerHandler(dataHandlerService)
 	router := router.NewShortenerRouter(handler)
 	mux.HandleFunc("/", router.HandleShortenerRequest)

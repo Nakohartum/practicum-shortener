@@ -30,7 +30,7 @@ func (sh *ShortenerHandler) HandleShortenerSet(rw http.ResponseWriter, req *http
 		http.Error(rw, "error happened reading body", http.StatusBadRequest)
 		return
 	} else {
-		shortentRes, err := shortenUrl(6)
+		shortentRes, err := shortenURL(6)
 		if err != nil {
 			http.Error(rw, err.Error(), http.StatusBadRequest)
 			return
@@ -43,7 +43,7 @@ func (sh *ShortenerHandler) HandleShortenerSet(rw http.ResponseWriter, req *http
 	}
 }
 
-func shortenUrl(nBytes int) (string, error) {
+func shortenURL(nBytes int) (string, error) {
 	b := make([]byte, nBytes)
 
 	if _, err := rand.Read(b); err != nil {

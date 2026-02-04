@@ -1,3 +1,3 @@
 package model
 
-type ShortenUrl string
+type ShortenURL string

@@ -3,24 +3,24 @@ package service
 import "github.com/Nakohartum/practicum-shortener/internal/model"
 
 type DataHandler interface {
-	GetData(key string) model.ShortenUrl
+	GetData(key string) model.ShortenURL
 	SetData(key, value string)
 }
 
-type ShortenUrlService struct {
+type ShortenURLService struct {
 	repo DataHandler
 }
 
-func NewShortenUrlService(dataHandler DataHandler) *ShortenUrlService {
-	return &ShortenUrlService{
+func NewShortenURLService(dataHandler DataHandler) *ShortenURLService {
+	return &ShortenURLService{
 		repo: dataHandler,
 	}
 }
 
-func (sr *ShortenUrlService) GetData(key string) model.ShortenUrl {
+func (sr *ShortenURLService) GetData(key string) model.ShortenURL {
 	return sr.repo.GetData(key)
 }
 
-func (sr *ShortenUrlService) SetData(key, value string) {
+func (sr *ShortenURLService) SetData(key, value string) {
 	sr.repo.SetData(key, value)
 }
