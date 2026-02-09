@@ -15,7 +15,9 @@ func main() {
 	repo := config.NewInMemoryRepo()
 	dataHandlerService := service.NewShortenURLService(repo)
 	handler := handler.NewShortenerHandler(dataHandlerService)
-	router := router.NewShortenerRouter(handler)
+	r := chi.NewRouter()
+	router := router.NewShortenerRouter(handler, r)
+	
 	mux.HandleFunc("/", router.HandleShortenerRequest)
 	
 
