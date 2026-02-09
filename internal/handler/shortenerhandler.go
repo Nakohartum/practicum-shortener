@@ -75,6 +75,7 @@ func (sh *ShortenerHandler) HandleShortenerGet(rw http.ResponseWriter, req *http
 
 	if shortentURL == ""{
 		http.Error(rw, "not correct path", http.StatusBadRequest)
+		return
 	}
 
 	res := sh.dataHandlerService.GetData(shortentURL)

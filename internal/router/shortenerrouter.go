@@ -1,8 +1,6 @@
 package router
 
 import (
-	"net/http"
-
 	"github.com/Nakohartum/practicum-shortener/internal/handler"
 	"github.com/go-chi/chi"
 )
@@ -12,16 +10,9 @@ type ShortenerRouter struct{
 	r chi.Router
 }
 
-func NewShortenerRouter(handler *handler.ShortenerHandler, r chi.Router) *ShortenerRouter{
-	return &ShortenerRouter{
-		handler: handler,
-		r: r,
-	}
-}
-
-func (sr *ShortenerRouter) HandleShortenerRequest(rw http.ResponseWriter, req *http.Request){
-	sr.r.Route("/", func(r chi.Router) {
-		r.Post("/", sr.handler.HandleShortenerSet)
-		r.Get("/{shortenedURL}", sr.handler.HandleShortenerGet)
-	})
+func NewShortenerRouter(handler *handler.ShortenerHandler) chi.Router{
+	router := chi.NewRouter()
+	router.HandleFunc("/", handler.HandleShortenerSet)
+    router.HandleFunc("/{shortenedURL}", handler.HandleShortenerGet)
+	return router
 }
