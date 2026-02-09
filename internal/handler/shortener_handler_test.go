@@ -50,6 +50,7 @@ func TestHandleShortenerSet(t *testing.T) {
 			sh.HandleShortenerSet(w, request)
 
 			res := w.Result()
+			defer res.Body.Close()
 
 			if tt.statusCode != res.StatusCode {
 				t.Errorf("not correct status code. expected: %d, actual: %d", tt.statusCode, res.StatusCode)
@@ -97,6 +98,7 @@ func TestHandleShortenerGet(t *testing.T) {
 			sh.HandleShortenerGet(w, request)
 
 			res := w.Result()
+			defer res.Body.Close()
 
 			if tt.status != res.StatusCode{
 				t.Errorf("not correct status. expected %d got %d", tt.status, res.StatusCode)
