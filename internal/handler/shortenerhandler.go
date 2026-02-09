@@ -30,6 +30,10 @@ func (sh *ShortenerHandler) HandleShortenerSet(rw http.ResponseWriter, req *http
 		http.Error(rw, "error happened reading body", http.StatusBadRequest)
 		return
 	} else {
+		if len(url) < 1{
+			http.Error(rw, "error happened reading body", http.StatusBadRequest)
+			return
+		}
 		shortentRes, err := shortenURL(6)
 		if err != nil {
 			http.Error(rw, err.Error(), http.StatusBadRequest)
