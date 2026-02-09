@@ -73,7 +73,7 @@ func (sh *ShortenerHandler) HandleShortenerGet(rw http.ResponseWriter, req *http
 
 	shortentURL := string(chi.URLParam(req, "shortenedURL"))
 
-	if shortentURL != ""{
+	if shortentURL == ""{
 		http.Error(rw, "not correct path", http.StatusBadRequest)
 	}
 
