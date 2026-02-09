@@ -6,26 +6,24 @@ import (
 	"strings"
 
 	"github.com/Nakohartum/practicum-shortener/internal/handler"
+	"github.com/go-chi/chi"
 )
 
 type ShortenerRouter struct{
 	handler *handler.ShortenerHandler
+	r chi.Router
 }
 
-func NewShortenerRouter(handler *handler.ShortenerHandler) *ShortenerRouter{
+func NewShortenerRouter(handler *handler.ShortenerHandler, r chi.Router) *ShortenerRouter{
 	return &ShortenerRouter{
 		handler: handler,
+		r: r,
 	}
 }
 
 func (sr *ShortenerRouter) HandleShortenerRequest(rw http.ResponseWriter, req *http.Request){
-	urlParts := strings.Split(strings.Trim(req.URL.Path, "/"), "/")
-
-	fmt.Println(strings.Trim(req.URL.Path, "/"))
-	switch{
-	case urlParts[0] == "":
-		sr.handler.HandleShortenerSet(rw, req)
-	case urlParts[0] != "":
-		sr.handler.HandleShortenerGet(rw, req)
-	}
+	sr.r.Route("/", func(r chi.Router) {
+		r.Post("/", sr.handler.HandleShortenerSet)
+		r.Get("/{shortenedURL}", sr.handler.HandleShortenerGet)
+	})
 }

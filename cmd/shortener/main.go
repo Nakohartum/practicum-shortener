@@ -7,6 +7,7 @@ import (
 	"github.com/Nakohartum/practicum-shortener/internal/handler"
 	"github.com/Nakohartum/practicum-shortener/internal/router"
 	"github.com/Nakohartum/practicum-shortener/internal/service"
+	"github.com/go-chi/chi"
 )
 
 func main() {
@@ -16,6 +17,7 @@ func main() {
 	handler := handler.NewShortenerHandler(dataHandlerService)
 	router := router.NewShortenerRouter(handler)
 	mux.HandleFunc("/", router.HandleShortenerRequest)
+	
 
 	http.ListenAndServe(":8080", mux)
 }

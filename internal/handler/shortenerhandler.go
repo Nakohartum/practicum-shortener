@@ -5,9 +5,9 @@ import (
 	"encoding/base64"
 	"io"
 	"net/http"
-	"strings"
 
 	"github.com/Nakohartum/practicum-shortener/internal/service"
+	"github.com/go-chi/chi"
 )
 
 type ShortenerHandler struct {
@@ -71,13 +71,13 @@ func (sh *ShortenerHandler) HandleShortenerGet(rw http.ResponseWriter, req *http
 		return
 	}
 
-	urlParts := strings.Split(strings.Trim(req.URL.Path, "/"), "/")
+	shortentURL := string(chi.URLParam(req, "shortenedURL"))
 
-	if len(urlParts) > 1{
+	if shortentURL != ""{
 		http.Error(rw, "not correct path", http.StatusBadRequest)
 	}
 
-	res := sh.dataHandlerService.GetData(urlParts[0])
+	res := sh.dataHandlerService.GetData(shortentURL)
 	rw.Header().Set("Location", string(res))
 	rw.WriteHeader(http.StatusTemporaryRedirect)
 }
