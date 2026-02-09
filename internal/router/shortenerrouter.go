@@ -1,9 +1,7 @@
 package router
 
 import (
-	"fmt"
 	"net/http"
-	"strings"
 
 	"github.com/Nakohartum/practicum-shortener/internal/handler"
 	"github.com/go-chi/chi"
