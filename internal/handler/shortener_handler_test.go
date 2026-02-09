@@ -8,6 +8,7 @@ import (
 
 	"github.com/Nakohartum/practicum-shortener/internal/config"
 	"github.com/Nakohartum/practicum-shortener/internal/service"
+	"github.com/go-chi/chi"
 )
 
 func TestHandleShortenerSet(t *testing.T) {
@@ -89,13 +90,15 @@ func TestHandleShortenerGet(t *testing.T) {
 
 	for _, tt := range tests{
 		t.Run(tt.name, func(t *testing.T) {
-			repo.SetData(tt.link, tt.shortenedLink)
+			repo.SetData(tt.shortenedLink, tt.link)
 
-			request := httptest.NewRequest(tt.method, "/"+tt.shortenedLink, nil)
+			r := chi.NewRouter()
+			r.Handle("/{shortenedURL}", http.HandlerFunc(sh.HandleShortenerGet))
 
+			req := httptest.NewRequest(tt.method, "/"+tt.shortenedLink, nil)
 			w := httptest.NewRecorder()
 
-			sh.HandleShortenerGet(w, request)
+			r.ServeHTTP(w, req)
 
 			res := w.Result()
 			defer res.Body.Close()
