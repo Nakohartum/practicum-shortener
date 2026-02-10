@@ -40,7 +40,7 @@ func TestHandleShortenerSet(t *testing.T) {
 
 	repo := config.NewInMemoryRepo()
 	dt := service.NewShortenURLService(repo)
-	sh := NewShortenerHandler(dt)
+	sh := NewShortenerHandler(dt, "localhost:8080")
 
 	for _, tt := range tests{
 		t.Run(tt.name, func(t *testing.T) {
@@ -86,7 +86,7 @@ func TestHandleShortenerGet(t *testing.T) {
 
 	repo := config.NewInMemoryRepo()
 	dt := service.NewShortenURLService(repo)
-	sh := NewShortenerHandler(dt)
+	sh := NewShortenerHandler(dt, "localhost:8080")
 
 	for _, tt := range tests{
 		t.Run(tt.name, func(t *testing.T) {
