@@ -9,10 +9,11 @@ import (
 )
 
 func main() {
+	readFlags()
 	repo := config.NewInMemoryRepo()
 	dataHandlerService := service.NewShortenURLService(repo)
 	handler := handler.NewShortenerHandler(dataHandlerService)
-	router := router.NewShortenerRouter(handler)
+	router := router.NewShortenerRouter(handler, serverFlags.shortenBaseAddress)
 
-	http.ListenAndServe(":8080", router)
+	http.ListenAndServe(serverFlags.address, router)
 }

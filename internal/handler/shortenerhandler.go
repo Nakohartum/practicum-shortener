@@ -5,18 +5,19 @@ import (
 	"encoding/base64"
 	"io"
 	"net/http"
-
 	"github.com/Nakohartum/practicum-shortener/internal/service"
 	"github.com/go-chi/chi"
 )
 
 type ShortenerHandler struct {
 	dataHandlerService service.DataHandler
+	shortenBase string
 }
 
-func NewShortenerHandler(dataHandlerService service.DataHandler) *ShortenerHandler {
+func NewShortenerHandler(dataHandlerService service.DataHandler, shortenBase string) *ShortenerHandler {
 	return &ShortenerHandler{
 		dataHandlerService: dataHandlerService,
+		shortenBase: shortenBase,
 	}
 }
 
@@ -49,7 +50,7 @@ func (sh *ShortenerHandler) HandleShortenerSet(rw http.ResponseWriter, req *http
 			scheme = "http"
 		}
 
-		res := scheme + "://" + req.Host + "/" + shortentRes
+		res := scheme + "://" + sh.shortenBase + "/" + shortentRes
 		sh.dataHandlerService.SetData(shortentRes, string(url))
 		rw.WriteHeader(http.StatusCreated)
 		rw.Write([]byte(res))
