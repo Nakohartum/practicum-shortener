@@ -13,6 +13,6 @@ type ShortenerRouter struct{
 func NewShortenerRouter(handler *handler.ShortenerHandler, shortenBase string) chi.Router{
 	router := chi.NewRouter()
 	router.HandleFunc("/", handler.HandleShortenerSet)
-    router.HandleFunc(shortenBase+"/{shortenedURL}", handler.HandleShortenerGet)
+    router.HandleFunc("/{shortenedURL}", handler.HandleShortenerGet)
 	return router
 }
