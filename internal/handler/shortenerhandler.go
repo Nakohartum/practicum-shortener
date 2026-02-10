@@ -3,8 +3,10 @@ package handler
 import (
 	"crypto/rand"
 	"encoding/base64"
+	"fmt"
 	"io"
 	"net/http"
+
 	"github.com/Nakohartum/practicum-shortener/internal/service"
 	"github.com/go-chi/chi"
 )
@@ -48,9 +50,10 @@ func (sh *ShortenerHandler) HandleShortenerSet(rw http.ResponseWriter, req *http
 			scheme = "https"
 		} else{
 			scheme = "http"
+			fmt.Print(scheme)
 		}
 
-		res := scheme + "://" + sh.shortenBase + "/" + shortentRes
+		res := sh.shortenBase + "/" + shortentRes
 		sh.dataHandlerService.SetData(shortentRes, string(url))
 		rw.WriteHeader(http.StatusCreated)
 		rw.Write([]byte(res))
