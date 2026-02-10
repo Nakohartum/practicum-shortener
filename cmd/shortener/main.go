@@ -12,7 +12,7 @@ func main() {
 	readFlags()
 	repo := config.NewInMemoryRepo()
 	dataHandlerService := service.NewShortenURLService(repo)
-	handler := handler.NewShortenerHandler(dataHandlerService)
+	handler := handler.NewShortenerHandler(dataHandlerService, serverFlags.shortenBaseAddress)
 	router := router.NewShortenerRouter(handler, serverFlags.shortenBaseAddress)
 
 	http.ListenAndServe(serverFlags.address, router)
