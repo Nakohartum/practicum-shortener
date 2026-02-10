@@ -50,10 +50,9 @@ func (sh *ShortenerHandler) HandleShortenerSet(rw http.ResponseWriter, req *http
 			scheme = "https"
 		} else{
 			scheme = "http"
-			fmt.Print(scheme)
 		}
 
-		res := sh.shortenBase + "/" + shortentRes
+		res := scheme + "://" + sh.shortenBase + "/" + shortentRes
 		sh.dataHandlerService.SetData(shortentRes, string(url))
 		rw.WriteHeader(http.StatusCreated)
 		rw.Write([]byte(res))
